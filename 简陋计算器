@@ -1,0 +1,241 @@
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#define L 100
+int count(char*,int);
+int count2(char*,int);
+int point(char*,int);
+int point2(char* a,int l);
+int main(void){
+char arr[L];
+int e=0;
+float ans=0;
+while(1){
+    gets(arr);
+float result=0;
+int w; 
+float m;
+int k=0;
+int x=0;
+//判断是否为初次进入while(1)
+for(int i=0;arr[i]!='\0';i++){
+    if(i==0){
+     if(strncmp(&arr[i],"ans",3)==0&&e!=0){
+                result+=ans;
+                continue;
+            }
+     if(strncmp(&arr[i],"ans",3)==0&&e==0){
+        printf("unknown ANS, may lead mistake\n");
+        x=1;
+        break;
+     }       
+    else{   
+    w=count2(arr,i);
+    m=0;
+    int fact=0;
+    int n=point2(arr,i);
+  for(int j=0;j<w;j++){
+                if(fact==0&&arr[i+j]!='.'&&arr[i+j]!='+'&&arr[i+j]!='-'&&arr[i+j]!='*'&&arr[i+j]!='/'&&arr[i+j]!='^'){
+               m+=(arr[i+j]-'0')*pow(10,n-j-1);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n-j);
+                }    
+                
+            }
+            result=m;  } 
+    }
+   else if(arr[i]!='+'&&arr[i]!='-'&&arr[i]!='*'&&arr[i]!='/'&&arr[i]!='^'){
+    e=1;
+    continue;}
+    else{//count 函数计数
+        if(arr[i]=='+'){
+            float m=0;
+            int n;
+            int fact=0;
+            if(strncmp(&arr[i+1],"ans",3)==0){
+                result+=ans;
+            }
+            else{
+            w=count(arr,i);
+            n=point(arr,i);
+            for(int j=1;j<=w;j++){
+                if(fact==0&&arr[i+j]!='.'){
+               m+=(arr[i+j]-'0')*pow(10,n-j);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n+1-j);
+                }    
+                
+            }
+        result+=m;}
+        }
+        if(arr[i]=='-'){//（模板）
+            float m=0;
+            int n;
+            int fact=0;
+            if(strncmp(&arr[i+1],"ans",3)==0){
+                result-=ans;
+            }
+            else{
+            w=count(arr,i);
+            n=point(arr,i);
+            for(int j=1;j<=w;j++){
+                if(fact==0&&arr[i+j]!='.'){
+               m+=(arr[i+j]-'0')*pow(10,n-j);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n+1-j);
+                }    
+                
+            }
+        result-=m;}
+        }//模板
+        if(arr[i]=='*'){
+             float m=0;
+            int n;
+            int fact=0;
+            if(strncmp(&arr[i+1],"ans",3)==0){
+                result*=ans;
+            }
+            else{
+            w=count(arr,i);
+            n=point(arr,i);
+            for(int j=1;j<=w;j++){
+                if(fact==0&&arr[i+j]!='.'){
+               m+=(arr[i+j]-'0')*pow(10,n-j);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n+1-j);
+                }    
+                
+            }
+        result*=m;}
+        }
+        if(arr[i]=='/'){
+            float m=0;
+            int n;
+            int fact=0;
+            if(strncmp(&arr[i+1],"ans",3)==0){
+                result/=ans;
+            }
+            else{
+            w=count(arr,i);
+            n=point(arr,i);
+            if(arr[i+1]=='0'&&arr[i+2]!='.'){
+                printf("invalid input,plz try again\n");
+                k=1;
+                break;
+            }
+            else{
+            for(int j=1;j<=w;j++){
+                if(fact==0&&arr[i+j]!='.'){
+               m+=(arr[i+j]-'0')*pow(10,n-j);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n+1-j);
+                }    
+                
+            }
+            result/=m;
+            }}
+        }
+        if(arr[i]=='^'){//
+    float m=0;
+            int n;
+            int fact=0;
+            if(strncmp(&arr[i+1],"ans",3)==0){
+                result=pow(result,ans);
+            }
+            else{
+            w=count(arr,i);
+            n=point(arr,i);
+            for(int j=1;j<=w;j++){
+                if(fact==0&&arr[i+j]!='.'){
+               m+=(arr[i+j]-'0')*pow(10,n-j);}
+                if(arr[i+j]=='.'&&fact==0){
+                    fact=1;
+                  continue;
+                    }
+                if(fact==1){
+                m+=(arr[i+j]-'0')*pow(10,n+1-j);
+                }    
+                
+            }
+        result=pow(result,m);
+
+        }}
+                    }
+    }
+ ans=result;
+if(k==0&&x==0){   
+printf("=%.2f\n\n",result);
+}
+else{
+    printf("\n");
+}
+
+}
+
+    return 0;
+}
+int count(char* a,int l){
+    int c=0;
+    l++;
+    while(a[l]!='+'&&a[l]!='-'&&a[l]!='*'&&a[l]!='/'&&a[l]!='\0'&&a[l]!='^'){
+        l++;
+        c++;
+    }
+    return c;
+}//arr,location
+int count2(char* a,int l){
+    int c=1;
+    l++;
+    while(a[l]!='+'&&a[l]!='-'&&a[l]!='*'&&a[l]!='/'&&a[l]!='\0'&&a[l]!='^'){
+        l++;
+        c++;
+    }
+    return c;
+}//arr,location
+int point(char* a,int l){
+    int bbc=0;
+    l++;
+    for(int i=l;a[i]!='.'&&a[i]!='+'&&a[i]!='-'&&a[i]!='*'&&a[i]!='/'&&a[i]!='\0'&&a[i]!='^';i++){
+        bbc++;}
+return bbc;}
+
+int point2(char* a,int l){
+    int bbc=1;
+    l++;
+    for(int i=l;a[i]!='.'&&a[i]!='+'&&a[i]!='-'&&a[i]!='*'&&a[i]!='/'&&a[i]!='^';i++){
+        bbc++;}
+return bbc;
+
+
+
+}
+//问题：1.括号 2.小数处理 3.乘方
+/*日志：a.增加了一位小数处理 
+日志2：a.增加了任意位数小数的处理 b.初步修复了x/0.y无法计算的bug c.增加了结果记忆（ANS）功能,初步增加了空ans报错功能
+待修复：ans作小数时的错误运算
+日志3.1.修复了ans作小数时的错误运算（其实就是把ans搞成int变量的问题，真牛马） 2.完善了空ans报错功能
+//日志4.最终版本
+
+
+
+*/
